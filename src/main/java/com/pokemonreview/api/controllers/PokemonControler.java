@@ -1,6 +1,9 @@
 package com.pokemonreview.api.controllers;
 
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
 import com.pokemonreview.api.models.pokemon;
+import com.pokemonreview.api.service.PokemonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,38 +13,52 @@ import java.util.List;
 @RestController
 @RequestMapping("api")
 public class PokemonControler {
-    @GetMapping("pokemon")
-    public ResponseEntity<List<pokemon>> getPokemons(){
-        pokemon pikachu = new pokemon(1, "Pikachu", "Electric");
-        return ResponseEntity.ok(List.of(pikachu));
+    private PokemonService _pokemonService;
+    public PokemonControler(PokemonService pokemonService)
+    {
+        this._pokemonService = pokemonService;
     }
+
+    @GetMapping("pokemon")
+    public ResponseEntity<PokemonResponse> getPokemons(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    ){
+        PokemonResponse pokemons = this._pokemonService.getPokemons(pageNo, pageSize);
+        return new ResponseEntity<>(pokemons, HttpStatus.OK);
+    }
+
     @GetMapping("pokemon/{id}")
     public pokemon getPokemonById(@PathVariable int id)
     {
-        return new pokemon(id, "Pikachu", "Electric");
+        PokemonDto pokemon = this._pokemonService.getPokemonById(id);
+        return new pokemon(pokemon.getId(), pokemon.getName(), pokemon.getType());
     }
+
     @PostMapping("pokemon/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<pokemon> createPokemon(@RequestBody pokemon pokemon)
+    public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemon)
     {
-        System.out.println(pokemon.getName());
-        System.out.println(pokemon.getType());
+        PokemonDto pokemonDto = this._pokemonService.createPokemon(pokemon);
+        return new ResponseEntity<>(pokemonDto, HttpStatus.CREATED);
 
-        return new ResponseEntity<>(pokemon, HttpStatus.CREATED);
     }
+
+
     @PutMapping("pokemon/{id}/update")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<pokemon> updatePokemon(@PathVariable int id, @RequestBody pokemon pokemon)
+    public ResponseEntity<PokemonDto> updatePokemon(@PathVariable int id, @RequestBody PokemonDto pokemonResquest)
     {
-        System.out.println(pokemon.getName());
-        System.out.println(pokemon.getType());
-
-        return new ResponseEntity<>(pokemon, HttpStatus.OK);
+        PokemonDto pokemonUpdate = this._pokemonService.updatePokemon(id, pokemonResquest);
+        return new ResponseEntity<>(pokemonUpdate, HttpStatus.OK);
     }
+
+
     @DeleteMapping("pokemon/{id}/delete")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> deletePokemon(@PathVariable int id)
     {
-        return new ResponseEntity<>("Pokemon deleted successfully", HttpStatus.OK);
+        this._pokemonService.deletePokemon(id);
+        return new ResponseEntity<>("Pokemon deleted", HttpStatus.OK);
     }
 }
