@@ -29,10 +29,10 @@ public class PokemonControler {
     }
 
     @GetMapping("pokemon/{id}")
-    public pokemon getPokemonById(@PathVariable int id)
+    public PokemonDto getPokemonById(@PathVariable int id)
     {
         PokemonDto pokemon = this._pokemonService.getPokemonById(id);
-        return new pokemon(pokemon.getId(), pokemon.getName(), pokemon.getType());
+        return pokemon;
     }
 
     @PostMapping("pokemon/create")
