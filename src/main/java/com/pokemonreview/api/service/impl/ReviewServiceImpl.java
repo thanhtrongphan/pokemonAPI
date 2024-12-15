@@ -43,6 +43,42 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewResponse;
 
     }
+
+    @Override
+    public ReviewDto findReviewById(int id) {
+        review review = this._reviewRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Review not found"));
+        ReviewDto reviewDto = mapToDto(review);
+        return reviewDto;
+    }
+
+    @Override
+    public ReviewDto updateReview(int pokemonId, int reviewId, ReviewDto reviewDto) {
+        pokemon pokemon = this._pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found"));
+        review review = this._reviewRepository.findById(reviewId).orElseThrow(() -> new PokemonNotFoundException("Review not found"));
+        if (review.getPokemon().getId() != pokemon.getId())
+        {
+            throw new PokemonNotFoundException("Review not found");
+        }
+        review.setName(reviewDto.getName());
+        review.setContent(reviewDto.getContent());
+        review.setStars(reviewDto.getStars());
+        review.setPokemon(pokemon);
+        this._reviewRepository.save(review);
+        ReviewDto reviewResponse = mapToDto(review);
+        return reviewResponse;
+    }
+
+    @Override
+    public void deleteReview(int reviewId, int pokemonId) {
+        pokemon pokemon = this._pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found"));
+        review review = this._reviewRepository.findById(reviewId).orElseThrow(() -> new PokemonNotFoundException("Review not found"));
+        if (review.getPokemon().getId() != pokemon.getId())
+        {
+            throw new PokemonNotFoundException("Review not found");
+        }
+        this._reviewRepository.delete(review);
+    }
+
     public ReviewDto mapToDto(review review) {
         ReviewDto reviewDto = new ReviewDto();
         reviewDto.setId(review.getId());
