@@ -1,0 +1,11 @@
+I. API pokemon
+	1. Model (Database table)
+	2. Dto (change http request to same type correct in database)
+	3. Exceptions (create own error to show)
+	4. Repository (connect to database by Jpa)
+	5. Service (interface function to get set database)
+	6. Controllers (connect HTTP request and function service to database)
+
+	http request -> controller -> service -> repository -> database
+	
+2. Security

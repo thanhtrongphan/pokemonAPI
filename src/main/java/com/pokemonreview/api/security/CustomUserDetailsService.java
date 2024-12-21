@@ -3,6 +3,7 @@ package com.pokemonreview.api.security;
 import com.pokemonreview.api.models.role;
 import com.pokemonreview.api.models.userEntity;
 import com.pokemonreview.api.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
-
+    @Autowired
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
