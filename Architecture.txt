@@ -1,8 +1,12 @@
 I. API pokemon
 	1. Model (Database table)
+		@Entity: create table in database
+		@Constructor: create contructor no and have parameter
+		@GenerateValue: auto setting int id
 	2. Dto (change http request to same type correct in database)
+		@Data: use lombok to auto create get set
 	3. Exceptions (create own error to show)
-	4. Repository (connect to database by Jpa)
+	4. Repository (connect to database by Jpa): create SQL
 	5. Service (interface function to get set database)
 	6. Controllers (connect HTTP request and function service to database)
 
