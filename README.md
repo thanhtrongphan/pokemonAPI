@@ -18,23 +18,7 @@ This project is a Spring Boot application that provides a RESTful API for managi
 - Java 17 or higher
 - Maven 3.6.0 or higher
 
-### Installation
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/thanhtrongphan/pokemon-review-api.git
-    cd pokemon-review-api
-    ```
-
-2. Build the project using Maven:
-    ```sh
-    mvn clean install
-    ```
-
-3. Run the application:
-    ```sh
-    mvn spring-boot:run
-    ```
 
 ## API Endpoints
 
